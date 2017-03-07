@@ -1,4 +1,6 @@
 # objection-timestamp
+[![npm](https://img.shields.io/npm/v/objection-timestamp.svg)](https://www.npmjs.com/package/objection-timestamp)
+
 Automatically set create and update timestamps on your Objection.js models.
 
 ## Installation
