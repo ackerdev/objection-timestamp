@@ -17,6 +17,8 @@ const objectionTimestamp = require('objection-timestamp');
 objectionTimestamp.register(objection);
 ```
 
+
+## Configuration
 By default, objection-timestamp uses `createdAt` and `updatedAt` attributes for timestamping. You can optionally pass in an options object as the second argument to register to specify custom attributes to use for timestamps:
 
 ```js
@@ -27,7 +29,11 @@ objectionTimestamp.register(objection, {
 ```
 
 ## Usage
-Just set the `timestamp` static property on your model to true:
+When timestamps are enabled on a model, the appropriate timestamp attributes will be set to `new Date()` before insert and update actions.
+
+
+### Enable timestamps for a model
+Set the `timestamp` static property on your model to true:
 
 ```js
 class MyModel {
@@ -37,6 +43,18 @@ class MyModel {
 }
 ```
 
-Before insert, the create and update timestamps on the model will be set to `new Date()`. If the timestamps are already set on the model, they will not be overwritten.
+### Enable only a specific timestamp for a model
+You can set the `timestamp` static property to an object to enable or disable specific a timestamp:
 
-Before update, the update timestamp on the model will be set to `new Date()`.
+```js
+class MyModel {
+  static get timestamp() {
+    return {
+      create: true,
+      update: false
+    }
+  }
+}
+```
+
+If either key is omitted it will be implicitly set to `false`.
