@@ -1,5 +1,7 @@
 'use strict';
 
+const normalizeTimestampConfig = require('./lib/normalize-timestamp-config');
+
 module.exports = {
   register(objection, options = {}) {
     const {
@@ -11,13 +13,13 @@ module.exports = {
       $beforeInsert(...args) {
         return Promise.resolve(super.$beforeInsert(...args))
         .then(() => {
-          const { timestamp } = this.constructor;
+          const timestamp = normalizeTimestampConfig(this.constructor.timestamp);
 
-          if (timestamp && this[create] === undefined) {
+          if (timestamp.create && this[create] === undefined) {
             this[create] = new Date();
           }
 
-          if (timestamp && this[update] === undefined) {
+          if (timestamp.update && this[update] === undefined) {
             this[update] = new Date();
           }
         });
@@ -26,9 +28,9 @@ module.exports = {
       $beforeUpdate(...args) {
         return Promise.resolve(super.$beforeUpdate(...args))
         .then(() => {
-          const { timestamp } = this.constructor;
+          const timestamp = normalizeTimestampConfig(this.constructor.timestamp);
 
-          if (timestamp) {
+          if (timestamp.update) {
             this[update] = new Date();
           }
         });
